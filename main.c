@@ -4,19 +4,18 @@
 
 void printDll(Dlist *head, Dlist *tail)
 {
-    // if(head == NULL)
-    // printf("List is empty\n");
-    // return;
+    if(head->data == 45)
+    {
+        printf("%c",head->data);
+        head = head->next;
+    }
 
-    printf("head -->");
     while(head!=NULL)
     {
-        printf(" %d <-",head->data);
+        printf("%d",head->data);
         head = head->next;
-		if (head!=NULL)
-		    printf("> ");
     }
-    printf(" tail\n");
+    printf("\n");
 }
 
 //------------------------------------------------------------------//
@@ -36,14 +35,11 @@ int main(int argc,char *argv[])
     Dlist *tail3 = NULL;
 
     if(create_node(&head1,&tail1,argv[1])==FAILURE)
-    {
         return FAILURE;
-    }
     printDll(head1,tail1);
+    
     if(create_node(&head2,&tail2,argv[3])==FAILURE)
-    {
-         return FAILURE;
-    }
+        return FAILURE;
     printDll(head2,tail2);
 
     calculator(head1,tail1,head2,tail2,&head3,&tail3,argv[2][0]);
