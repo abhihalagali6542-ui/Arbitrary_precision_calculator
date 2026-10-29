@@ -2,24 +2,6 @@
 
 //------------------------------------------------------------------//
 
-void printDll(Dlist *head, Dlist *tail)
-{
-    if(head->data == 45)
-    {
-        printf("%c",head->data);
-        head = head->next;
-    }
-
-    while(head!=NULL)
-    {
-        printf("%d",head->data);
-        head = head->next;
-    }
-    printf("\n");
-}
-
-//------------------------------------------------------------------//
-
 int main(int argc,char *argv[])
 {
     if(argc != 4)
@@ -27,23 +9,17 @@ int main(int argc,char *argv[])
         printf("Invalid arguments\n");
         return FAILURE;
     }
+
     Dlist *head1 = NULL;
     Dlist *tail1 = NULL;
     Dlist *head2 = NULL;
     Dlist *tail2 = NULL;
-    Dlist *head3 = NULL;
-    Dlist *tail3 = NULL;
 
     if(create_node(&head1,&tail1,argv[1])==FAILURE)
         return FAILURE;
-    printDll(head1,tail1);
-    
     if(create_node(&head2,&tail2,argv[3])==FAILURE)
         return FAILURE;
-    printDll(head2,tail2);
-
-    calculator(head1,tail1,head2,tail2,&head3,&tail3,argv[2][0]);
-    printDll(head3,tail3);
+    calculator(head1,tail1,head2,tail2,argv[2][0]);
 }
 
 //------------------------------------------------------------------//
