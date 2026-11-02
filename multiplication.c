@@ -2,7 +2,7 @@
 
 //------------------------------------------------------------------//
 
-void mul_operation(Dlist *head1,Dlist *tail1,Dlist *head2,Dlist *tail2,Dlist **headR,Dlist **tailR)
+int mul_operation(Dlist *head1,Dlist *tail1,Dlist *head2,Dlist *tail2,Dlist **headR,Dlist **tailR,char sign)
 {
     Dlist *res_head1=NULL;
     Dlist *res_tail1=NULL;
@@ -16,7 +16,11 @@ void mul_operation(Dlist *head1,Dlist *tail1,Dlist *head2,Dlist *tail2,Dlist **h
         Dlist *temp1 = tail1;
         for(int i=0;i<count;i++)
         {
-            insert_first(&res_head2,&res_tail2,0);
+            if(insert_first(&res_head2,&res_tail2,0)==FAILURE)
+            {
+                printf("ERROR: Unable to insert data at first\n");
+                return FAILURE;
+            }
         }
         
         if(count==0)
@@ -26,7 +30,11 @@ void mul_operation(Dlist *head1,Dlist *tail1,Dlist *head2,Dlist *tail2,Dlist **h
                 int data = (temp1->data*temp2->data)+carry;
                 temp1 = temp1->prev;
                 carry=data/10;
-                insert_first(&res_head1,&res_tail1,data%10);
+                if(insert_first(&res_head1,&res_tail1,data%10)==FAILURE)
+                {
+                    printf("ERROR: Unable to insert data at first\n");
+                    return FAILURE;
+                }
             }
         }
         else
@@ -36,16 +44,28 @@ void mul_operation(Dlist *head1,Dlist *tail1,Dlist *head2,Dlist *tail2,Dlist **h
                 int data = (temp1->data*temp2->data)+carry;
                 temp1 = temp1->prev;
                 carry=data/10;
-                insert_first(&res_head2,&res_tail2,data%10);
+                if(insert_first(&res_head2,&res_tail2,data%10)==FAILURE)
+                {
+                    printf("ERROR: Unable to insert data at first\n");
+                    return FAILURE;
+                }
             }
         }
 
         if(carry)
         {
             if(count==0) 
-                insert_first(&res_head1,&res_tail1,carry);
+                if(insert_first(&res_head1,&res_tail1,carry)==FAILURE)
+                {
+                    printf("ERROR: Unable to insert data at first\n");
+                    return FAILURE;
+                }
             else         
-                insert_first(&res_head2,&res_tail2,carry);
+                if(insert_first(&res_head2,&res_tail2,carry)==FAILURE)
+                {
+                    printf("ERROR: Unable to insert data at first\n");
+                    return FAILURE;
+                }
         }
 
         if(res_head1!=NULL && res_head2!=NULL)
@@ -60,8 +80,17 @@ void mul_operation(Dlist *head1,Dlist *tail1,Dlist *head2,Dlist *tail2,Dlist **h
         }
         temp2=temp2->prev;
     }
+    
+    remove_zero(&res_head1);
+    if(sign == '-')
+        insert_first(&res_head1,&res_tail1,'-');
 
-    display_result(head1,tail1,head2,tail2,res_head1,res_tail1,'x');
+    if(printDll(res_head1,res_tail1)==LIST_IS_EMPTY)
+    {
+        printf("INFO: List is Empty\n");
+        return FAILURE;
+    }
+    return SUCCESS;
 }
 
 //------------------------------------------------------------------//
